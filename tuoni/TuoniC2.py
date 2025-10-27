@@ -61,7 +61,7 @@ class TuoniC2:
         }
 
         response = requests.post(f"{url}/api/v1/auth/login", headers=headers, verify=self._verify)
-        if response.status_code < 200 and response.status_code >= 300:
+        if response.status_code < 200 or response.status_code >= 300:
             raise ExceptionTuoniAuthentication(response.text)
         self._token = response.text
         self._url = url
@@ -96,7 +96,7 @@ class TuoniC2:
         self._request_check()
         headers = {"Authorization": f"Bearer {self._token}"}
         response = requests.request(method, f"{self._url}{uri}", headers=headers, verify=self._verify, **kwargs)
-        if response.status_code < 200 and response.status_code >= 300:
+        if response.status_code < 200 or response.status_code >= 300:
             self._raise_request_exception(response.text)
         return response
 
